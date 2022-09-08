@@ -11,18 +11,26 @@ public final class ParseInFile {
         this.file = file;
     }
 
-    public String getContent(Predicate<Character> filter) {
-        String output = "";
+    private synchronized String getContent(Predicate<Character> filter) {
+        StringBuilder output = new StringBuilder();
         try (BufferedInputStream i = new BufferedInputStream(new FileInputStream(file))) {
             int data;
-            while ((data = i.read()) > 0) {
+            while ((data = i.read()) != -1) {
                 if (filter.test((char) data)) {
-                    output += (char) data;
+                    output.append((char) data);
                 }
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return output;
+        return output.toString();
+    }
+
+    public synchronized String getCharEqualsA() {
+        return getContent(e -> e == 'A');
+    }
+
+    public synchronized String getCharEqualsB() {
+        return getContent(e -> e == 'B');
     }
 }

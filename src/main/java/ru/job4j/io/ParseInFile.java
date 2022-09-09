@@ -26,11 +26,11 @@ public final class ParseInFile {
         return output.toString();
     }
 
-    public synchronized String getCharEqualsA() {
-        return getContent(e -> e == 'A');
+    public synchronized String getAllContent() {
+        return getContent(e -> true);
     }
 
-    public synchronized String getCharEqualsB() {
-        return getContent(e -> e == 'B');
+    public synchronized String getUnicodeContent() {
+        return getContent(e -> e < 0x80);
     }
 }

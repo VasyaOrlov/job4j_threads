@@ -11,34 +11,30 @@ public class SimpleBlockingQueue<T> {
 
     @GuardedBy("this")
     private final Queue<T> queue = new LinkedList<>();
-    private static final int LIMIT = 3;
-    private static final int EMPTY = 0;
+    private final int limit;
 
-    public synchronized void offer(T value) {
-        while (queue.size() == LIMIT) {
-            try {
-                this.wait();
-            } catch (InterruptedException e) {
-                Thread.currentThread().interrupt();
-            }
-        }
-        if (queue.size() < LIMIT) {
-            this.notify();
+    public SimpleBlockingQueue(int limit) {
+        this.limit = limit;
+    }
+
+    public synchronized void offer(T value) throws InterruptedException {
+        while (queue.size() == limit) {
+            this.wait();
         }
         queue.add(value);
+        this.notify();
     }
 
     public synchronized T poll() throws InterruptedException {
-        while (queue.size() == EMPTY) {
+        while (isEmpty()) {
             this.wait();
         }
-        if (queue.size() > EMPTY) {
-            this.notify();
-        }
-        return queue.poll();
+        T rsl = queue.poll();
+        this.notify();
+        return rsl;
     }
 
     public synchronized boolean isEmpty() {
-        return !queue.isEmpty();
+        return queue.isEmpty();
     }
 }

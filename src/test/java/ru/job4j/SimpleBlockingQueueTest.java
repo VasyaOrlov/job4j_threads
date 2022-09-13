@@ -79,7 +79,7 @@ class SimpleBlockingQueueTest {
     }
 
     @Test
-    public void OfferAndPollTest() throws InterruptedException {
+    public void offerAndPollTest() throws InterruptedException {
         List<Integer> list = new ArrayList<>();
         SimpleBlockingQueue<Integer> queue = new SimpleBlockingQueue<>(3);
         Thread producer = new Thread(

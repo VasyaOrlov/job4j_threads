@@ -78,6 +78,7 @@ class SimpleBlockingQueueTest {
         assertThat(buffer).isEqualTo(Arrays.asList(0, 1, 2));
     }
 
+
     @Test
     public void offerAndPollTest() throws InterruptedException {
         List<Integer> list = new ArrayList<>();

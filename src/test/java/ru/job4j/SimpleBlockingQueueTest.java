@@ -17,7 +17,13 @@ class SimpleBlockingQueueTest {
                 }
         );
         Thread second = new Thread(
-                queue::poll
+                () -> {
+                    try {
+                        queue.poll();
+                    } catch (InterruptedException e) {
+                        Thread.currentThread().interrupt();
+                    }
+                }
         );
         first.start();
         second.start();

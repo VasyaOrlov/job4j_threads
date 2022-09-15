@@ -20,7 +20,7 @@ public class ParallelFindIndex<T> extends RecursiveTask<Integer> {
     protected Integer compute() {
         int length = finish - start + 1;
         if (length <= 10) {
-            return find(array);
+            return find();
         }
         int halfIndex = (start + finish) / 2;
         ParallelFindIndex<T> first = new ParallelFindIndex<>(array, value, start, halfIndex - 1);
@@ -36,7 +36,7 @@ public class ParallelFindIndex<T> extends RecursiveTask<Integer> {
         return first != -1 ? first : second;
     }
 
-    private int find(T[] array) {
+    private int find() {
         for (int i = start; i <= finish; i++) {
             if (array[i].equals(value)) {
                 return i;

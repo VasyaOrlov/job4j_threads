@@ -29,11 +29,7 @@ public class ParallelFindIndex<T> extends RecursiveTask<Integer> {
         second.fork();
         int f = first.join();
         int s = second.join();
-        return merge(f, s);
-    }
-
-    private int merge(int first, int second) {
-        return first != -1 ? first : second;
+        return Math.max(f, s);
     }
 
     private int find() {

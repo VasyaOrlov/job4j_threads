@@ -4,42 +4,12 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
 public class RolColSum {
-    public static class Sums {
-        private final int rowSum;
-        private final int colSum;
 
-        public Sums(int rowSum, int colSum) {
-            this.rowSum = rowSum;
-            this.colSum = colSum;
-        }
-
-        public int getRowSum() {
-            return rowSum;
-        }
-
-        public int getColSum() {
-            return colSum;
-        }
-
-        @Override
-        public String toString() {
-            return "Sums{"
-                    + "rowSum=" + rowSum
-                    + ", colSum=" + colSum
-                    + '}';
-        }
-    }
 
     public static Sums[] sum(int[][] matrix) {
         Sums[] rsl = new Sums[matrix.length];
         for (int i = 0; i < rsl.length; i++) {
-            int row = 0;
-            int col = 0;
-            for (int j = 0; j < rsl.length; j++) {
-                row += matrix[i][j];
-                col += matrix[j][i];
-            }
-            rsl[i] = new Sums(row, col);
+            rsl[i] = calcSum(matrix, i);
         }
         return rsl;
     }
@@ -57,16 +27,18 @@ public class RolColSum {
 
     public static CompletableFuture<Sums> getSums(int[][] matrix, int index) {
         return CompletableFuture.supplyAsync(
-                () -> {
-                    int row = 0;
-                    int col = 0;
-                    for (int j = 0; j < matrix.length; j++) {
-                        row += matrix[index][j];
-                        col += matrix[j][index];
-                    }
-                    return new Sums(row, col);
-                }
+                () -> calcSum(matrix, index)
         );
+    }
+
+    private static Sums calcSum(int[][] matrix, int index) {
+        int row = 0;
+        int col = 0;
+        for (int j = 0; j < matrix.length; j++) {
+            row += matrix[index][j];
+            col += matrix[j][index];
+        }
+        return new Sums(row, col);
     }
 
     public static void main(String[] args) throws ExecutionException, InterruptedException {
